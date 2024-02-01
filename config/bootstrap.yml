@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    nacos:
+      server-addr: 121.43.39.16:8848
+      username: nacos
+      password: nacos
+
+logging:
+  level:
+    root: info
