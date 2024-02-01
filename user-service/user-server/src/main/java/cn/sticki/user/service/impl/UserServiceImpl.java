@@ -162,7 +162,7 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 		User user = userMapper.selectById(id);
 		if (UserConfig.DefaultAvatar.equals(user.getAvatarUrl())) {
 			// 拼接文件名的字符串，使用 userid+username 的格式来命名文件
-			user.setAvatarUrl(user.getId() + "_" + user.getUsername());
+			user.setAvatarUrl(user.getId() + "_" + user.getUsername() + "." + avatarFile.getOriginalFilename().split("[.]")[1]);
 			objectRedisTemplate.delete(USER_SERVICE_INFO_KEY + id);
 			userMapper.updateById(user);
 		}

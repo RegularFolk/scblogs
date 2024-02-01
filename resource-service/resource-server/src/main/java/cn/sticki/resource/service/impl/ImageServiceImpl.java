@@ -77,17 +77,21 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
 	@Override
 	public String uploadAvatar(MultipartFile image, String name) {
 		try {
-			// 上传图片
-			return qiNiuService.upload(image, name, "scblogs-avatar");
-		} catch (Exception e) {
-			log.error("头像上传失败:{},{}", name, e.getMessage());
-			throw new UploadException("头像上传失败");
-		}
+            // 上传图片
+//			return qiNiuService.upload(image, name, "scblogs-avatar");
+            // 改为使用minio本地存储头像文件
+			String s = ResourcePath.imageUrlBase + ResourcePath.avatarBucket + "/" + name;
+			minioService.upload(image, name, ResourcePath.avatarBucket);
+            return s;
+        } catch (Exception e) {
+            log.error("头像上传失败:{},{}", name, e.getMessage());
+            throw new UploadException("头像上传失败");
+        }
 	}
 
 	@Override
 	public String uploadBlogImage(MultipartFile image) throws MinioException, IOException {
-		return uploadImage(image, "image");
+		return uploadImage(image, ResourcePath.imageBucket);
 	}
 
 	private String uploadImage(MultipartFile image, String bucketName) throws IOException, MinioException {
